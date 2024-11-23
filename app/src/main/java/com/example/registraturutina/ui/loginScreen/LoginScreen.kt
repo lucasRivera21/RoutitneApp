@@ -9,33 +9,37 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.registraturutina.ui.components.PrimaryButton
 import com.example.registraturutina.ui.components.TextFieldComponent
 
-@Preview(showSystemUi = true)
 @Composable
-fun LoginScreen() {
+fun LoginScreen(loginViewModel: LoginViewModel) {
+    val email: String by loginViewModel.email.observeAsState(initial = "")
+    val password: String by loginViewModel.password.observeAsState(initial = "")
+
     Column(
         Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(horizontal = 28.dp).padding(bottom = 120.dp, top = 80.dp),
+            .padding(horizontal = 28.dp)
+            .padding(bottom = 120.dp, top = 80.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Header()
 
-        Body()
+        Body(email, password, loginViewModel)
 
         Footer()
     }
@@ -53,24 +57,17 @@ fun Header() {
 }
 
 @Composable
-fun Body() {
+fun Body(email: String, password: String, loginViewModel: LoginViewModel) {
     Column(Modifier.fillMaxWidth()) {
-        TextFieldComponent("Email", "", {  }, false)
+        TextFieldComponent("Email", email, { loginViewModel.onChangeEmail(it) })
 
         Spacer(Modifier.size(14.dp))
 
-        TextFieldComponent("Contraseña", "", {  }, true)
+        TextFieldComponent("Contraseña", password, { loginViewModel.onChangePassword(it) }, true)
 
         Spacer(Modifier.size(14.dp))
 
-        Button(
-            onClick = { },
-            shape = MaterialTheme.shapes.small,
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Text("Entrar")
-        }
+        PrimaryButton("Entrar") { }
     }
 }
 

@@ -8,10 +8,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun TextFieldComponent(label: String, value: String, onValueChange: () -> Unit, isPassword: Boolean) {
+fun TextFieldComponent(label: String, value: String, onValueChange: (String) -> Unit, isPassword: Boolean = false) {
     OutlinedTextField(
         value = value,
-        onValueChange = { onValueChange() },
+        onValueChange = { onValueChange(it) },
         label = {
             Text(
                 label,
